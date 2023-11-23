@@ -4,33 +4,91 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chatbot</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: url('https://images.pexels.com/photos/4058112/pexels-photo-4058112.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load') center/cover;
+        }
+
+        #chat-container {
+            max-width: 40%;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.9); /* Add some transparency for better readability */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        #messages {
+            padding: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        #message-input {
+            width: 100%;
+            padding: 10px;
+            margin: 0;
+            border: none;
+            border-top: 1px rgba(240, 234, 234, 0.9);
+        }
+
+        #send-button {
+            width: 100%;
+            padding: 10px;
+            background-color: rgb(43, 229, 53);
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        #send-button:hover {
+            background-color:#9ed5a0 ;
+        }
+    </style>
 </head>
 <body>
+
     <div id="chat-container">
         <div id="messages"></div>
-        <input type="text" id="message-input" placeholder="Type your message...">
-        <button onclick="sendMessage()">Send</button>
+        <input type="text" id="message-input" placeholder="Type your message..." onkeypress="handleKeyPress(event)">
+        <button onclick="sendMessage()" id="send-button">Send</button>
     </div>
 
     <script>
         function sendMessage() {
             var message = document.getElementById('message-input').value;
-            document.getElementById('messages').innerHTML += '<p>User: ' + message + '</p>';
-            document.getElementById('message-input').value = '';
+            if (message.trim() !== '') {
+                document.getElementById('messages').innerHTML += '<p>User: ' + message + '</p>';
+                document.getElementById('message-input').value = '';
 
-            // Make a POST request to the /predict route
-            fetch('/predict', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: 'message=' + encodeURIComponent(message),
-            })
-            .then(response => response.json())
-            .then(data => {
-                var botResponse = 'Bot: ' + data.response;
-                document.getElementById('messages').innerHTML += '<p>' + botResponse + '</p>';
-            });
+                // Make a POST request to the /predict route
+                fetch('/predict', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: 'message=' + encodeURIComponent(message),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    var botResponse = 'Pandora: ' + data.response;
+                    document.getElementById('messages').innerHTML += '<p>' + botResponse + '</p>';
+                });
+            }
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
         }
     </script>
 </body>
