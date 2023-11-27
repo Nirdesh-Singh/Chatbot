@@ -4,3 +4,6 @@ nltk
 keras
 numpy
 tensorflow
+punkt
+wordnet
+omw-1.4
