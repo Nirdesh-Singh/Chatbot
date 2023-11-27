@@ -2,6 +2,11 @@ from flask import Flask, render_template, request, jsonify
 import json
 import random
 from chatbot import get_response, predict_class
+import nltk
+
+nltk.download('punkt')
+nltk.download('wordnet')
+nltk.download('omw-1.4')
 
 app = Flask(__name__)
 
