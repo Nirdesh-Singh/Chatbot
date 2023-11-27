@@ -3,3 +3,4 @@ gunicorn
 nltk
 keras
 numpy
+tensorflow
